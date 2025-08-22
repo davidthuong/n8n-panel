@@ -898,10 +898,6 @@ change_domain() {
     fi
     
     stop_spinner 
-    if ! create_docker_compose_config; then 
-        return 1 
-    fi
-
     if ! configure_nginx_and_ssl; then 
         return 1 
     fi
@@ -957,17 +953,12 @@ upgrade_n8n_version() {
     fi
 
     trap 'RC=$?; stop_spinner; if [[ $RC -ne 0 && $RC -ne 130 ]]; then echo -e "\n${RED}Da xay ra loi trong qua trinh nang cap (Ma loi: $RC).${NC}"; fi; read -r -p "Nhan Enter de quay lai menu..."; return 0;' ERR SIGINT SIGTERM
-    
+
+    sed -i 's|image: n8nio/n8n:.*|image: n8nio/n8n:latest|' "${DOCKER_COMPOSE_FILE}"
+
     start_spinner "Dang nang cap N8N len phien ban moi nhat..."
     
     cd "${N8N_DIR}" || { return 1; }
-
-    stop_spinner; start_spinner "Dam bao cau hinh Docker Compose su dung tag :latest..."
-    if ! create_docker_compose_config; then 
-        return 1
-    fi
-    stop_spinner; start_spinner "Tiep tuc nang cap..."
-
 
     run_silent_command "Tai image N8N moi nhat (${N8N_SERVICE_NAME} service)" "$DOCKER_COMPOSE_CMD pull ${N8N_SERVICE_NAME}" "false"
     if [ $? -ne 0 ]; then 
@@ -1590,7 +1581,7 @@ uninstall() {
         # Su dung sudo de xoa file trong /usr/local/bin
         if sudo rm -f "$INSTALL_PATH"; then
             if [[ $? -eq 0 ]]; then
-                echo -e "${GREEN}[+] Da go bo '$INSTALL_PATH' thanh cong.${NC}"
+                echo -e "${GREEN}[+] Da go bo thanh cong.${NC}"
             else
                 echo -e "${RED}[!] Gap loi khong xac dinh khi go bo.${NC}"
             fi
