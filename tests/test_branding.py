@@ -67,5 +67,20 @@ class PanelBrandingTests(unittest.TestCase):
         self.assertNotIn("cloudfly.vn", workflow_text)
 
 
+class DocumentationBrandingTests(unittest.TestCase):
+    def test_readme_documents_bizmac_installation(self):
+        readme = (ROOT / "README.md").read_text(encoding="utf-8")
+
+        self.assertIn("# BizMaC N8N Manager", readme)
+        self.assertIn("https://github.com/davidthuong/n8n-panel", readme)
+        self.assertIn(
+            "https://raw.githubusercontent.com/davidthuong/n8n-panel/main/install.sh",
+            readme,
+        )
+        self.assertIn("sudo bash install.sh", readme)
+        self.assertNotIn("CloudFly", readme)
+        self.assertNotIn("cloudfly.vn", readme)
+
+
 if __name__ == "__main__":
     unittest.main()

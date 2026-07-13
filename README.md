@@ -1,134 +1,127 @@
-# N8N Cloud Manager
+# BizMaC N8N Manager
 
-## Giới thiệu
+BizMaC N8N Manager là bộ công cụ dòng lệnh giúp cài đặt và quản lý N8N trên máy chủ Ubuntu. Công cụ tự động cấu hình Docker, PostgreSQL, Redis, Nginx, SSL Let's Encrypt và cung cấp các thao tác quản trị thường dùng.
 
-N8N Cloud Manager là công cụ hỗ trợ quản lý N8N trên CloudFly, bao gồm các chức năng như cài đặt, nâng cấp, xuất/nhập dữ liệu, và cấu hình hệ thống.
+> Lệnh `n8n-host` được giữ nguyên để tương thích với các bản cài đặt trước.
 
-Phát triển bởi
-![CloudFly Logo](https://cloudfly.vn/_next/image?url=%2Fimage%2Flogo%2Flogo.webp&w=256&q=75)
+## Yêu cầu hệ thống
 
-## ![CloudFly n8n panel screenshot](https://i.ibb.co/2YMYwK2g/image-2025-06-26-14-45-32-1.png)
+- Ubuntu 20.04, 22.04 hoặc 24.04
+- Quyền quản trị `root`/`sudo`
+- Tên miền đã trỏ bản ghi DNS về IP public của máy chủ
+- Cấu hình tối thiểu: 1 CPU, 1 GB RAM, 20 GB lưu trữ
+- Cấu hình khuyến nghị: 2 CPU, 2 GB RAM, 20 GB lưu trữ trở lên
 
+## Cài đặt
 
-## Cấu hình và hệ điều hành
-- Cấu hình tối thiểu để chạy là: `1-1-20 (khuyến khích 2-2-20)`
-- Hệ điều hành: `Ubuntu (ưu tiên version 20, 22, 24)`
-
-
-## Cách sử dụng
-
-### 1. Cài đặt công cụ
-
-Chạy lệnh sau để cài đặt công cụ:
+### Cách 1: Clone repository
 
 ```bash
+git clone https://github.com/davidthuong/n8n-panel.git
+cd n8n-panel
 sudo bash install.sh
 ```
 
-hoặc có thể chạy 1 lệnh duy nhất sau (ưu tiên hơn)
+### Cách 2: Tải installer trực tiếp
 
 ```bash
-sudo bash -c 'URL=https://cloudfly.vn/download/n8n-host/install.sh && if [ -f /usr/bin/curl ];then curl -ksSO $URL ;else wget --no-check-certificate -O install.sh $URL;fi;bash install.sh'
+curl -fsSL https://raw.githubusercontent.com/davidthuong/n8n-panel/main/install.sh -o install.sh
+sudo bash install.sh
 ```
 
-### 2. Các chức năng chính
+Installer sẽ:
 
-Sau khi cài đặt, bạn có thể sử dụng công cụ bằng cách chạy lệnh:
+1. Tải `n8n-host.sh` từ repository này.
+2. Cài lệnh quản trị tại `/usr/local/bin/n8n-host`.
+3. Tải workflow import vào `/n8n-templates/import-workflow-credentials.json`.
+
+## Sử dụng
+
+Mở menu quản trị:
 
 ```bash
-n8n-host
+sudo n8n-host
 ```
 
-Công cụ sẽ hiển thị menu chính với các chức năng sau:
-
-| **Số** | **Chức năng**                              |
-| ------ | ------------------------------------------ |
-| 1      | Cài đặt N8N                                |
-| 2      | Thay đổi tên miền                          |
-| 3      | Nâng cấp phiên bản N8N                     |
-| 4      | Tắt xác thực 2 bước (2FA/MFA)              |
-| 5      | Đặt lại thông tin đăng nhập                |
-| 6      | Export tất cả (workflows & credentials)    |
-| 7      | Import workflows & credentials từ template |
-| 8      | Lấy thông tin Redis                        |
-| 9      | Quản lý NocoDB                             |
-| 10     | Xóa N8N và cài đặt lại                     |
-
----
-
-### 3. Hướng dẫn sử dụng các chức năng
-
-#### **Cài đặt N8N**
-
-1. Chọn `1) Cài đặt N8N` từ menu.
-2. Nhập tên miền bạn muốn sử dụng (ví dụ: `n8n.example.com`).
-3. Công cụ sẽ tự động cài đặt và cấu hình N8N trên server.
-
-#### **Thay đổi tên miền**
-
-1. Chọn `2) Thay đổi tên miền` từ menu.
-2. Nhập tên miền mới.
-3. Công cụ sẽ cập nhật cấu hình và cấp lại chứng chỉ SSL.
-
-#### **Nâng cấp phiên bản N8N**
-
-1. Chọn `3) Nâng cấp phiên bản N8N` từ menu.
-2. Công cụ sẽ tải phiên bản mới nhất từ Docker Hub và khởi động lại N8N.
-
-#### **Tắt xác thực 2 bước (2FA/MFA)**
-
-1. Chọn `4) Tắt xác thực 2 bước (2FA/MFA)` từ menu.
-2. Nhập email của tài khoản cần tắt 2FA.
-3. Công cụ sẽ thực hiện tắt 2FA cho tài khoản.
-
-#### **Đặt lại thông tin đăng nhập**
-
-1. Chọn `5) Đặt lại thông tin đăng nhập` từ menu.
-2. Công cụ sẽ reset thông tin tài khoản owner và yêu cầu tạo lại tài khoản khi truy cập N8N.
-
-#### **Export tất cả (workflows & credentials)**
-
-1. Chọn `6) Export tất cả (workflows & credentials)` từ menu.
-2. Công cụ sẽ xuất dữ liệu và cung cấp đường dẫn tải xuống.
-
-#### **Import workflows & credentials từ template**
-
-1. Chọn `7) Import workflows & credentials` từ menu.
-2. Công cụ sẽ import dữ liệu từ file template `import-workflow-credentials.json`.
-
-#### **Lấy thông tin Redis**
-
-1. Chọn `8) Lấy thông tin Redis` từ menu.
-2. Công cụ sẽ hiển thị thông tin kết nối Redis.
-
-#### **Quản lý NocoDB**
-
-1. Chọn `9) Quản lý NocoDB` từ menu.
-2. Nếu NocoDB chưa được cài đặt:
-   - Chọn `1) Cài đặt NocoDB`.
-   - Công cụ sẽ tự động cài đặt và cấu hình NocoDB.
-3. Nếu NocoDB đã được cài đặt:
-   - Chọn `1) Xem thông tin NocoDB` để hiển thị thông tin kết nối.
-   - Chọn `2) Gỡ cài đặt NocoDB` để xóa NocoDB.
-   - Chọn `3) Khởi động lại NocoDB` để khởi động lại NocoDB.
-
-#### **Xóa N8N và cài đặt lại**
-
-1. Chọn `10) Xóa N8N và cài đặt lại` từ menu.
-2. Công cụ sẽ xóa toàn bộ dữ liệu và cài đặt lại N8N từ đầu.
-
----
-
-### 4. Gỡ bỏ công cụ
-
-Để gỡ bỏ công cụ, chạy lệnh:
+Hiển thị trợ giúp:
 
 ```bash
-n8n-host --uninstall
+n8n-host --help
 ```
 
----
+### Chức năng chính
 
-## Tài liệu tham khảo
+| Số | Chức năng |
+| --- | --- |
+| 1 | Cài đặt N8N |
+| 2 | Thay đổi tên miền |
+| 3 | Nâng cấp N8N lên image `latest` |
+| 4 | Tắt xác thực hai bước (2FA/MFA) cho tài khoản |
+| 5 | Đặt lại tài khoản owner |
+| 6 | Export workflows và credentials |
+| 7 | Import workflow hỗ trợ khôi phục dữ liệu |
+| 8 | Hiển thị thông tin kết nối Redis |
+| 9 | Quản lý NocoDB |
+| 10 | Xóa toàn bộ N8N và cài đặt lại |
 
-- [Hướng dẫn sử dụng N8N Cloud](https://cloudfly.vn/link/n8n-cloud-docs)
+## Luồng cài đặt N8N
+
+Khi chọn `1) Cài đặt N8N`, công cụ sẽ:
+
+1. Cài các gói cần thiết: Docker, Docker Compose, Nginx, Certbot, DNS utilities và cURL.
+2. Kiểm tra DNS của tên miền.
+3. Tạo thông tin xác thực ngẫu nhiên cho PostgreSQL, Redis và khóa mã hóa N8N.
+4. Tạo Docker Compose với N8N, PostgreSQL và Redis.
+5. Cấu hình reverse proxy Nginx và chứng chỉ SSL Let's Encrypt.
+6. Kiểm tra khả năng truy cập N8N qua HTTPS.
+
+Dữ liệu và cấu hình được lưu tại `/n8n-cloud`. Hãy sao lưu file `/n8n-cloud/.env` ở nơi an toàn vì file này chứa khóa mã hóa và thông tin xác thực.
+
+## Export và import dữ liệu
+
+### Export
+
+Chọn mục `6` để xuất toàn bộ workflows và credentials. Các file được lưu trong `/n8n-cloud/backups` và được cung cấp qua đường dẫn HTTPS tạm thời trong phiên làm việc.
+
+### Import
+
+Chọn mục `7` để import workflow `[BizMaC] Import Workflows, Credentials`. Sau khi import:
+
+1. Mở workflow trong giao diện N8N.
+2. Kích hoạt workflow.
+3. Mở Production URL của Form Trigger.
+4. Tải lên file workflows hoặc credentials đã export.
+
+## Quản lý NocoDB
+
+Chọn mục `9` để mở menu NocoDB:
+
+- Khi chưa cài đặt: chọn `1` để cài đặt.
+- Khi đã cài đặt: chọn `1` để xem thông tin, `2` để khởi động lại, hoặc `3` để gỡ cài đặt.
+
+## Gỡ công cụ quản trị
+
+```bash
+sudo n8n-host --uninstall
+```
+
+Lệnh này chỉ xóa `/usr/local/bin/n8n-host`; dữ liệu N8N trong `/n8n-cloud` không bị xóa.
+
+## Cảnh báo an toàn
+
+- Mục `10) Xóa N8N và cài đặt lại` xóa vĩnh viễn workflows, credentials, executions, PostgreSQL, Redis, cấu hình Nginx và chứng chỉ SSL liên quan. Hãy export dữ liệu trước khi sử dụng.
+- Mục `8) Lấy thông tin Redis` hiển thị mật khẩu Redis trên terminal. Không chia sẻ nội dung này.
+- File `.env` chứa dữ liệu nhạy cảm và phải được bảo vệ bằng quyền truy cập phù hợp.
+
+## Kiểm tra mã nguồn
+
+```bash
+python -m unittest discover -v
+bash -n install.sh n8n-host.sh
+python -m json.tool templates/import-workflow-credentials.json > /dev/null
+```
+
+## Mã nguồn
+
+- Repository: https://github.com/davidthuong/n8n-panel
+- Thương hiệu giao diện quản trị: **BizMaC**
