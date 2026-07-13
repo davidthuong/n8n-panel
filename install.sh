@@ -9,15 +9,17 @@ YELLOW='\e[1;33m'
 CYAN='\e[1;36m'
 NC='\e[0m'
 
-# !!! THAY DOI URL NAY thanh link tai script cua ban !!!
-SCRIPT_URL="https://cloudfly.vn/download/n8n-host/n8n-host.sh" # VI DU: Link raw GitHub
+BRAND_NAME="BizMaC"
+REPOSITORY_RAW_URL="https://raw.githubusercontent.com/davidthuong/n8n-panel/main"
+SCRIPT_NAME="n8n-host"
+SCRIPT_URL="${REPOSITORY_RAW_URL}/n8n-host.sh"
+TEMPLATE_FILE_NAME="import-workflow-credentials.json"
+TEMPLATE_URL="${REPOSITORY_RAW_URL}/templates/${TEMPLATE_FILE_NAME}"
 
-SCRIPT_NAME="n8n-host" #path/to/script/name
 # Khuyen nghi dung /usr/local/bin cho script tuy chinh
 INSTALL_DIR="/usr/local/bin"
 INSTALL_PATH="${INSTALL_DIR}/${SCRIPT_NAME}"
-TEMP_SCRIPT="/tmp/${SCRIPT_NAME}.sh.$$" 
-TEMPLATE_FILE_NAME="import-workflow-credentials.json" 
+TEMP_SCRIPT="/tmp/${SCRIPT_NAME}.sh.$$"
 
 # --- Ham kiem tra quyen root ---
 check_root() {
@@ -71,7 +73,7 @@ download_script() {
 
 # --- Ham cai dat ---
 install_script() {
-    echo -e "${YELLOW}[*] Bat dau qua trinh cai dat...${NC}"
+    echo -e "${YELLOW}[*] Cong cu ${BRAND_NAME} N8N Manager - bat dau cai dat...${NC}"
 
     # 1. Kiem tra quyen root
     check_root
@@ -121,7 +123,7 @@ install_script() {
     fi
     echo -e "${YELLOW}[*] Tai ve file template...${NC}"
 
-    curl -fsSL -o "/n8n-templates/${TEMPLATE_FILE_NAME}" "https://cloudfly.vn/download/n8n-host/templates/${TEMPLATE_FILE_NAME}"
+    curl -fsSL -o "/n8n-templates/${TEMPLATE_FILE_NAME}" "${TEMPLATE_URL}"
     if [[ $? -ne 0 ]]; then
         echo -e "${RED}[!] Loi: Khong the tai ve file template.${NC}"
         exit 1
