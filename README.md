@@ -36,6 +36,23 @@ Installer sẽ:
 3. Tạo alias tương thích `/usr/local/bin/n8n-host`.
 4. Tải workflow import vào `/n8n-templates/import-workflow-credentials.json`.
 
+### Nguồn asset cài đặt
+
+GitHub hiện là nguồn asset tạm thời. Installer lấy script quản trị và template từ biến `ASSET_BASE_URL`, với giá trị mặc định là repository này.
+
+Khi hạ tầng download BizMaC sẵn sàng, có thể chuyển nguồn mà không sửa installer:
+
+```bash
+sudo env BIZMAC_ASSET_BASE_URL="<URL_ASSET_BIZMAC>" bash install.sh
+```
+
+URL được cung cấp phải có cấu trúc:
+
+```text
+<URL_ASSET_BIZMAC>/n8n-host.sh
+<URL_ASSET_BIZMAC>/templates/import-workflow-credentials.json
+```
+
 ## Sử dụng
 
 Mở menu quản trị:
@@ -115,6 +132,18 @@ Lệnh này xóa cả `/usr/local/bin/bizmac-n8n` và alias `/usr/local/bin/n8n-
 - Mục `10) Xóa N8N và cài đặt lại` xóa vĩnh viễn workflows, credentials, executions, PostgreSQL, Redis, cấu hình Nginx và chứng chỉ SSL liên quan. Hãy export dữ liệu trước khi sử dụng.
 - Mục `8) Lấy thông tin Redis` hiển thị mật khẩu Redis trên terminal. Không chia sẻ nội dung này.
 - File `.env` chứa dữ liệu nhạy cảm và phải được bảo vệ bằng quyền truy cập phù hợp.
+
+## Tình trạng giấy phép
+
+Kiểm tra ngày 13/07/2026 cho thấy:
+
+- [`davidthuong/n8n-panel`](https://github.com/davidthuong/n8n-panel) là fork trực tiếp của [`vvthien/n8n-panel`](https://github.com/vvthien/n8n-panel), không phải một codebase độc lập.
+- Cả repository hiện tại và upstream đều không có file `LICENSE`; GitHub API cũng không nhận diện giấy phép cho hai repository.
+- Repository công khai và khả năng fork trên GitHub không tự động cấp quyền sửa đổi, phân phối, white-label hoặc thương mại hóa mã nguồn.
+- Trước khi bán, phân phối hoặc cung cấp dịch vụ dựa trên bản chỉnh sửa này, cần có sự cho phép bằng văn bản từ chủ sở hữu quyền tác giả thực tế, hoặc thay thế bằng một bản triển khai clean-room có giấy phép rõ ràng.
+- N8N được triển khai bởi script có lớp giấy phép riêng. Hãy kiểm tra [n8n Sustainable Use License](https://github.com/n8n-io/n8n/blob/master/LICENSE.md) và [hướng dẫn use case chính thức](https://support.n8n.io/article/can-i-use-your-license-for-my-use-case); dịch vụ managed hosting hoặc white-label có thể yêu cầu Enterprise/Embed license.
+
+Nội dung trên là ghi nhận kỹ thuật về trạng thái license, không phải tư vấn pháp lý. Không thêm một license mới vào repository này nếu chưa xác minh quyền cấp phép.
 
 ## Kiểm tra mã nguồn
 

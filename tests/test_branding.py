@@ -97,6 +97,12 @@ class DocumentationBrandingTests(unittest.TestCase):
         self.assertIn("sudo bash install.sh", readme)
         self.assertIn("sudo bizmac-n8n", readme)
         self.assertIn("`n8n-host` chỉ là alias tương thích", readme)
+        self.assertIn("BIZMAC_ASSET_BASE_URL", readme)
+        self.assertIn("GitHub hiện là nguồn asset tạm thời", readme)
+        self.assertIn("## Tình trạng giấy phép", readme)
+        self.assertIn("không có file `LICENSE`", readme)
+        self.assertIn("vvthien/n8n-panel", readme)
+        self.assertIn("n8n Sustainable Use License", readme)
         self.assertNotIn("CloudFly", readme)
         self.assertNotIn("cloudfly.vn", readme)
 
