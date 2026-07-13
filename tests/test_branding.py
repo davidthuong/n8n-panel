@@ -9,22 +9,23 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class InstallerBrandingTests(unittest.TestCase):
-    def test_installer_uses_bizmac_branding_and_github_assets(self):
+    def test_installer_uses_configurable_bizmac_asset_base(self):
         installer = (ROOT / "install.sh").read_text(encoding="utf-8")
 
         self.assertIn('BRAND_NAME="BizMaC"', installer)
         self.assertIn('Cong cu ${BRAND_NAME} N8N Manager', installer)
         self.assertIn(
-            'REPOSITORY_RAW_URL="https://raw.githubusercontent.com/davidthuong/n8n-panel/main"',
+            'ASSET_BASE_URL="${BIZMAC_ASSET_BASE_URL:-https://raw.githubusercontent.com/davidthuong/n8n-panel/main}"',
             installer,
         )
+        self.assertNotIn("REPOSITORY_RAW_URL", installer)
         self.assertIn('SCRIPT_NAME="bizmac-n8n"', installer)
         self.assertIn('LEGACY_SCRIPT_NAME="n8n-host"', installer)
-        self.assertIn('SCRIPT_URL="${REPOSITORY_RAW_URL}/n8n-host.sh"', installer)
+        self.assertIn('SCRIPT_URL="${ASSET_BASE_URL}/n8n-host.sh"', installer)
         self.assertIn('LEGACY_INSTALL_PATH="${INSTALL_DIR}/${LEGACY_SCRIPT_NAME}"', installer)
         self.assertIn('ln -sfn "$INSTALL_PATH" "$LEGACY_INSTALL_PATH"', installer)
         self.assertIn(
-            'TEMPLATE_URL="${REPOSITORY_RAW_URL}/templates/${TEMPLATE_FILE_NAME}"',
+            'TEMPLATE_URL="${ASSET_BASE_URL}/templates/${TEMPLATE_FILE_NAME}"',
             installer,
         )
         self.assertNotIn("CloudFly", installer)
@@ -72,8 +73,13 @@ class PanelBrandingTests(unittest.TestCase):
         workflow_path = ROOT / "templates" / "import-workflow-credentials.json"
         workflow_text = workflow_path.read_text(encoding="utf-8")
         workflow = json.loads(workflow_text)
+        panel = (ROOT / "n8n-host.sh").read_text(encoding="utf-8")
 
+        self.assertEqual("import-workflow-credentials.json", workflow_path.name)
         self.assertEqual("[BizMaC] Import Workflows, Credentials", workflow["name"])
+        self.assertIsInstance(workflow["nodes"], list)
+        self.assertIsInstance(workflow["connections"], dict)
+        self.assertIn('TEMPLATE_FILE_NAME="import-workflow-credentials.json"', panel)
         self.assertNotIn("CloudFly", workflow_text)
         self.assertNotIn("cloudfly.vn", workflow_text)
 

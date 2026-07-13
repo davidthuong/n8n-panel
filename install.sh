@@ -10,12 +10,13 @@ CYAN='\e[1;36m'
 NC='\e[0m'
 
 BRAND_NAME="BizMaC"
-REPOSITORY_RAW_URL="https://raw.githubusercontent.com/davidthuong/n8n-panel/main"
+# Tam thoi dung GitHub; dat BIZMAC_ASSET_BASE_URL khi chuyen sang domain download BizMaC.
+ASSET_BASE_URL="${BIZMAC_ASSET_BASE_URL:-https://raw.githubusercontent.com/davidthuong/n8n-panel/main}"
 SCRIPT_NAME="bizmac-n8n"
 LEGACY_SCRIPT_NAME="n8n-host"
-SCRIPT_URL="${REPOSITORY_RAW_URL}/n8n-host.sh"
+SCRIPT_URL="${ASSET_BASE_URL}/n8n-host.sh"
 TEMPLATE_FILE_NAME="import-workflow-credentials.json"
-TEMPLATE_URL="${REPOSITORY_RAW_URL}/templates/${TEMPLATE_FILE_NAME}"
+TEMPLATE_URL="${ASSET_BASE_URL}/templates/${TEMPLATE_FILE_NAME}"
 
 # Khuyen nghi dung /usr/local/bin cho script tuy chinh
 INSTALL_DIR="/usr/local/bin"
