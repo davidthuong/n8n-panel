@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# install.sh - Cai dat Cong cu N8N Host
+# install.sh - Cai dat BizMaC N8N Manager
 
 # --- Dinh nghia mau sac va bien ---
 RED='\e[1;31m'
@@ -11,7 +11,8 @@ NC='\e[0m'
 
 BRAND_NAME="BizMaC"
 REPOSITORY_RAW_URL="https://raw.githubusercontent.com/davidthuong/n8n-panel/main"
-SCRIPT_NAME="n8n-host"
+SCRIPT_NAME="bizmac-n8n"
+LEGACY_SCRIPT_NAME="n8n-host"
 SCRIPT_URL="${REPOSITORY_RAW_URL}/n8n-host.sh"
 TEMPLATE_FILE_NAME="import-workflow-credentials.json"
 TEMPLATE_URL="${REPOSITORY_RAW_URL}/templates/${TEMPLATE_FILE_NAME}"
@@ -19,6 +20,7 @@ TEMPLATE_URL="${REPOSITORY_RAW_URL}/templates/${TEMPLATE_FILE_NAME}"
 # Khuyen nghi dung /usr/local/bin cho script tuy chinh
 INSTALL_DIR="/usr/local/bin"
 INSTALL_PATH="${INSTALL_DIR}/${SCRIPT_NAME}"
+LEGACY_INSTALL_PATH="${INSTALL_DIR}/${LEGACY_SCRIPT_NAME}"
 TEMP_SCRIPT="/tmp/${SCRIPT_NAME}.sh.$$"
 
 # --- Ham kiem tra quyen root ---
@@ -107,12 +109,17 @@ install_script() {
     echo -e "${YELLOW}[*] Cap quyen thuc thi cho script...${NC}"
     if ! sudo chmod +x "$INSTALL_PATH"; then
         echo -e "${RED}[!] Loi: Khong the cap quyen thuc thi cho ${INSTALL_PATH}.${NC}"
-        # Co the can go bo file da copy neu khong cap quyen duoc? Tuy chon.
-        # sudo rm -f "$INSTALL_PATH"
         exit 1
     fi
 
-    # 7. Tao thu muc n8n-templates ngang hang voi root va tai ve file template
+    # 7. Giu alias n8n-host de tuong thich voi ban cai dat cu
+    echo -e "${YELLOW}[*] Tao alias tuong thich: ${LEGACY_INSTALL_PATH}${NC}"
+    if ! sudo ln -sfn "$INSTALL_PATH" "$LEGACY_INSTALL_PATH"; then
+        echo -e "${RED}[!] Loi: Khong the tao alias ${LEGACY_INSTALL_PATH}.${NC}"
+        exit 1
+    fi
+
+    # 8. Tao thu muc n8n-templates ngang hang voi root va tai ve file template
     echo -e "${YELLOW}[*] Tao thu muc n8n-templates...${NC}"
     if [[ ! -d "/n8n-templates" ]]; then
         sudo mkdir -p "/n8n-templates"
@@ -129,10 +136,11 @@ install_script() {
         exit 1
     fi
     
-    # 8. Kiem tra lai
-    if [[ -f "$INSTALL_PATH" && -x "$INSTALL_PATH" ]]; then
+    # 9. Kiem tra lai
+    if [[ -f "$INSTALL_PATH" && -x "$INSTALL_PATH" && -L "$LEGACY_INSTALL_PATH" ]]; then
         echo -e "\n${GREEN}[+++] Cai dat thanh cong! ${NC}"
-        echo -e "Ban co the chay cong cu bang lenh: ${CYAN}${SCRIPT_NAME}${NC}"
+        echo -e "Lenh chinh: ${CYAN}${SCRIPT_NAME}${NC}"
+        echo -e "Alias tuong thich: ${CYAN}${LEGACY_SCRIPT_NAME}${NC}"
         echo -e "De go bo, chay lenh: ${CYAN}${SCRIPT_NAME} --uninstall${NC}"
     else
         echo -e "\n${RED}[!] Cai dat that bai. Khong tim thay file thuc thi tai ${INSTALL_PATH}.${NC}"

@@ -2,7 +2,7 @@
 
 BizMaC N8N Manager là bộ công cụ dòng lệnh giúp cài đặt và quản lý N8N trên máy chủ Ubuntu. Công cụ tự động cấu hình Docker, PostgreSQL, Redis, Nginx, SSL Let's Encrypt và cung cấp các thao tác quản trị thường dùng.
 
-> Lệnh `n8n-host` được giữ nguyên để tương thích với các bản cài đặt trước.
+> Lệnh chính là `bizmac-n8n`. `n8n-host` chỉ là alias tương thích với các bản cài đặt trước.
 
 ## Yêu cầu hệ thống
 
@@ -31,23 +31,26 @@ sudo bash install.sh
 
 Installer sẽ:
 
-1. Tải `n8n-host.sh` từ repository này.
-2. Cài lệnh quản trị tại `/usr/local/bin/n8n-host`.
-3. Tải workflow import vào `/n8n-templates/import-workflow-credentials.json`.
+1. Tải script quản trị `n8n-host.sh` từ repository này.
+2. Cài lệnh chính tại `/usr/local/bin/bizmac-n8n`.
+3. Tạo alias tương thích `/usr/local/bin/n8n-host`.
+4. Tải workflow import vào `/n8n-templates/import-workflow-credentials.json`.
 
 ## Sử dụng
 
 Mở menu quản trị:
 
 ```bash
-sudo n8n-host
+sudo bizmac-n8n
 ```
 
 Hiển thị trợ giúp:
 
 ```bash
-n8n-host --help
+bizmac-n8n --help
 ```
+
+Lệnh cũ `n8n-host` vẫn hoạt động và chuyển tới cùng công cụ.
 
 ### Chức năng chính
 
@@ -102,10 +105,10 @@ Chọn mục `9` để mở menu NocoDB:
 ## Gỡ công cụ quản trị
 
 ```bash
-sudo n8n-host --uninstall
+sudo bizmac-n8n --uninstall
 ```
 
-Lệnh này chỉ xóa `/usr/local/bin/n8n-host`; dữ liệu N8N trong `/n8n-cloud` không bị xóa.
+Lệnh này xóa cả `/usr/local/bin/bizmac-n8n` và alias `/usr/local/bin/n8n-host`; dữ liệu N8N trong `/n8n-cloud` không bị xóa.
 
 ## Cảnh báo an toàn
 

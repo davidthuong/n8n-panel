@@ -18,8 +18,11 @@ class InstallerBrandingTests(unittest.TestCase):
             'REPOSITORY_RAW_URL="https://raw.githubusercontent.com/davidthuong/n8n-panel/main"',
             installer,
         )
-        self.assertIn('SCRIPT_NAME="n8n-host"', installer)
+        self.assertIn('SCRIPT_NAME="bizmac-n8n"', installer)
+        self.assertIn('LEGACY_SCRIPT_NAME="n8n-host"', installer)
         self.assertIn('SCRIPT_URL="${REPOSITORY_RAW_URL}/n8n-host.sh"', installer)
+        self.assertIn('LEGACY_INSTALL_PATH="${INSTALL_DIR}/${LEGACY_SCRIPT_NAME}"', installer)
+        self.assertIn('ln -sfn "$INSTALL_PATH" "$LEGACY_INSTALL_PATH"', installer)
         self.assertIn(
             'TEMPLATE_URL="${REPOSITORY_RAW_URL}/templates/${TEMPLATE_FILE_NAME}"',
             installer,
@@ -34,6 +37,11 @@ class PanelBrandingTests(unittest.TestCase):
         panel = panel_path.read_text(encoding="utf-8")
 
         self.assertIn('BRAND_NAME="BizMaC"', panel)
+        self.assertIn('COMMAND_NAME="bizmac-n8n"', panel)
+        self.assertIn('LEGACY_COMMAND_NAME="n8n-host"', panel)
+        self.assertIn('INSTALL_PATH="/usr/local/bin/${COMMAND_NAME}"', panel)
+        self.assertIn('LEGACY_INSTALL_PATH="/usr/local/bin/${LEGACY_COMMAND_NAME}"', panel)
+        self.assertIn('sudo rm -f "$INSTALL_PATH" "$LEGACY_INSTALL_PATH"', panel)
         self.assertIn("BizMaC N8N Manager", panel)
         self.assertNotIn("CloudFly", panel)
         self.assertNotIn("cloudfly.vn", panel)
@@ -55,6 +63,9 @@ class PanelBrandingTests(unittest.TestCase):
         self.assertEqual(0, result.returncode)
         self.assertEqual("", result.stderr)
         self.assertIn("BizMaC N8N Manager", result.stdout)
+        self.assertIn("Cach su dung: bizmac-n8n [tuy chon]", result.stdout)
+        self.assertIn("Tuong thich: n8n-host", result.stdout)
+        self.assertNotIn("Cach su dung: n8n-host", result.stdout)
         self.assertNotIn("CloudFly", result.stdout)
 
     def test_workflow_template_uses_bizmac_branding(self):
@@ -78,6 +89,8 @@ class DocumentationBrandingTests(unittest.TestCase):
             readme,
         )
         self.assertIn("sudo bash install.sh", readme)
+        self.assertIn("sudo bizmac-n8n", readme)
+        self.assertIn("`n8n-host` chỉ là alias tương thích", readme)
         self.assertNotIn("CloudFly", readme)
         self.assertNotIn("cloudfly.vn", readme)
 

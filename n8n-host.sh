@@ -9,6 +9,8 @@ NC='\e[0m'        # Reset mau (tro ve binh thuong)
 
 # --- Bien Global ---
 BRAND_NAME="BizMaC"
+COMMAND_NAME="bizmac-n8n"
+LEGACY_COMMAND_NAME="n8n-host"
 PROJECT_URL="https://github.com/davidthuong/n8n-panel"
 N8N_DIR="/n8n-cloud" # Thu muc chua toan bo cai dat N8N
 ENV_FILE="${N8N_DIR}/.env"
@@ -21,7 +23,8 @@ NGINX_EXPORT_INCLUDE_DIR="/etc/nginx/n8n_export_includes"
 NGINX_EXPORT_INCLUDE_FILE_BASENAME="n8n_export_location" 
 TEMPLATE_DIR="/n8n-templates" # Thu muc chua template tren host
 TEMPLATE_FILE_NAME="import-workflow-credentials.json" # Ten file template
-INSTALL_PATH="/usr/local/bin/n8n-host" # Duong dan cai dat script
+INSTALL_PATH="/usr/local/bin/${COMMAND_NAME}" # Duong dan cai dat script chinh
+LEGACY_INSTALL_PATH="/usr/local/bin/${LEGACY_COMMAND_NAME}" # Alias tuong thich
 
 # --- Ham Kiem tra ---
 check_root() {
@@ -1578,30 +1581,26 @@ restart_nocodb() {
 }
 
 uninstall() {
-    echo -e "\n${YELLOW}[*] Dang kiem tra va go bo cong cu tai: ${INSTALL_PATH}${NC}"
-    if [[ -f "$INSTALL_PATH" ]]; then
-        # Su dung sudo de xoa file trong /usr/local/bin
-        if sudo rm -f "$INSTALL_PATH"; then
-            if [[ $? -eq 0 ]]; then
-                echo -e "${GREEN}[+] Da go bo thanh cong.${NC}"
-            else
-                echo -e "${RED}[!] Gap loi khong xac dinh khi go bo.${NC}"
-            fi
+    echo -e "\n${YELLOW}[*] Dang go bo ${COMMAND_NAME} va alias ${LEGACY_COMMAND_NAME}...${NC}"
+    if [[ -e "$INSTALL_PATH" || -L "$INSTALL_PATH" || -e "$LEGACY_INSTALL_PATH" || -L "$LEGACY_INSTALL_PATH" ]]; then
+        if sudo rm -f "$INSTALL_PATH" "$LEGACY_INSTALL_PATH"; then
+            echo -e "${GREEN}[+] Da go bo thanh cong.${NC}"
         else
-             echo -e "${RED}[!] Loi khi thuc hien lenh go bo (kiem tra quyen sudo).${NC}"
+            echo -e "${RED}[!] Loi khi thuc hien lenh go bo (kiem tra quyen sudo).${NC}"
         fi
     else
-        echo -e "${YELLOW}[!] Khong tim thay file cong cu tai '${INSTALL_PATH}'.${NC}"
+        echo -e "${YELLOW}[!] Khong tim thay ${COMMAND_NAME} hoac alias ${LEGACY_COMMAND_NAME}.${NC}"
     fi
     exit 0
 }
 
 show_help() {
     echo "${BRAND_NAME} N8N Manager - Cong cu quan ly N8N"
-    echo "Cach su dung: n8n-host [tuy chon]"
+    echo "Cach su dung: ${COMMAND_NAME} [tuy chon]"
+    echo "Tuong thich: ${LEGACY_COMMAND_NAME}"
     echo "Tuy chon:"
     echo "  --help      Hien thi thong tin tro giup nay"
-    echo "  --uninstall Go bo n8n-host khoi he thong"
+    echo "  --uninstall Go bo ${COMMAND_NAME} va alias ${LEGACY_COMMAND_NAME}"
     echo "Tai lieu: ${PROJECT_URL}"
     exit 0
 }
