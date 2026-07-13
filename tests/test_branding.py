@@ -1,4 +1,7 @@
+import json
+import os
 from pathlib import Path
+import subprocess
 import unittest
 
 
@@ -23,6 +26,45 @@ class InstallerBrandingTests(unittest.TestCase):
         )
         self.assertNotIn("CloudFly", installer)
         self.assertNotIn("cloudfly.vn", installer)
+
+
+class PanelBrandingTests(unittest.TestCase):
+    def test_panel_help_and_menu_use_bizmac_branding(self):
+        panel_path = ROOT / "n8n-host.sh"
+        panel = panel_path.read_text(encoding="utf-8")
+
+        self.assertIn('BRAND_NAME="BizMaC"', panel)
+        self.assertIn("BizMaC N8N Manager", panel)
+        self.assertNotIn("CloudFly", panel)
+        self.assertNotIn("cloudfly.vn", panel)
+
+        bash_path = "bash"
+        if os.name == "nt":
+            bash_path = str(Path(os.environ["ProgramFiles"]) / "Git" / "bin" / "bash.exe")
+
+        result = subprocess.run(
+            [bash_path, str(panel_path), "--help"],
+            cwd=ROOT,
+            capture_output=True,
+            input="0\n",
+            text=True,
+            timeout=5,
+            check=False,
+        )
+
+        self.assertEqual(0, result.returncode)
+        self.assertEqual("", result.stderr)
+        self.assertIn("BizMaC N8N Manager", result.stdout)
+        self.assertNotIn("CloudFly", result.stdout)
+
+    def test_workflow_template_uses_bizmac_branding(self):
+        workflow_path = ROOT / "templates" / "import-workflow-credentials.json"
+        workflow_text = workflow_path.read_text(encoding="utf-8")
+        workflow = json.loads(workflow_text)
+
+        self.assertEqual("[BizMaC] Import Workflows, Credentials", workflow["name"])
+        self.assertNotIn("CloudFly", workflow_text)
+        self.assertNotIn("cloudfly.vn", workflow_text)
 
 
 if __name__ == "__main__":

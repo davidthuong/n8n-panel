@@ -8,6 +8,8 @@ CYAN='\e[1;36m'    # Mau xanh cyan (dam)
 NC='\e[0m'        # Reset mau (tro ve binh thuong)
 
 # --- Bien Global ---
+BRAND_NAME="BizMaC"
+PROJECT_URL="https://github.com/davidthuong/n8n-panel"
 N8N_DIR="/n8n-cloud" # Thu muc chua toan bo cai dat N8N
 ENV_FILE="${N8N_DIR}/.env"
 DOCKER_COMPOSE_FILE="${N8N_DIR}/docker-compose.yml"
@@ -1366,7 +1368,7 @@ import_data() {
         stop_spinner
         echo -e "\n${YELLOW}--- HUONG DAN SU DUNG ---${NC}"
         echo -e "1. Truy cap vao N8N qua trinh duyet."
-        echo -e "2. Tim workflow ${GREEN}[CloudFly] Import Workflows, Credentials${NC} trong danh sach 'Workflows'."
+        echo -e "2. Tim workflow ${GREEN}[BizMaC] Import Workflows, Credentials${NC} trong danh sach 'Workflows'."
         echo -e "3. ${GREEN}Kich hoat (Activate)${NC} workflow va doc huong dan trong workflow de su dung."
     fi
     sudo rm -f "${import_log}"
@@ -1594,6 +1596,16 @@ uninstall() {
     exit 0
 }
 
+show_help() {
+    echo "${BRAND_NAME} N8N Manager - Cong cu quan ly N8N"
+    echo "Cach su dung: n8n-host [tuy chon]"
+    echo "Tuy chon:"
+    echo "  --help      Hien thi thong tin tro giup nay"
+    echo "  --uninstall Go bo n8n-host khoi he thong"
+    echo "Tai lieu: ${PROJECT_URL}"
+    exit 0
+}
+
 if [[ "$1" == "--help" ]]; then
     show_help
 fi
@@ -1603,25 +1615,16 @@ if [[ "$1" == "--uninstall" ]]; then
     uninstall
 fi
 
-show_help() {
-    echo "N8N Cloud Manager - Cong cu quan ly N8N tren CloudFly"
-    echo "Cach su dung: n8n-host [tuy chon]"
-    echo "Tuy chon:"
-    echo "  --help      Hien thi thong tin tro giup nay"
-    echo "  --uninstall Go bo n8n-host khoi he thong"
-    exit 0
-}
-
 # --- Hien thi Menu Chinh ---
 show_menu() {
   clear
   printf "${CYAN}+==================================================================================+${NC}\n"
-  printf "${CYAN}|                                N8N Cloud Manager                                 |${NC}\n"
-  printf "${CYAN}|                    Powered by CloudFly - https://cloudfly.vn                     |${NC}\n"
+  printf "${CYAN}|                               BizMaC N8N Manager                                 |${NC}\n"
+  printf "${CYAN}|                  Powered by BizMaC - github.com/davidthuong                     |${NC}\n"
   printf "${CYAN}+==================================================================================+${NC}\n"
   echo ""
   echo -e " ${YELLOW}Phim tat: Nhan Ctrl + C hoac nhap 0 de thoat${NC}" 
-  echo -e " ${GREEN}Xem huong dan:${NC} ${CYAN}https://cloudfly.vn/link/n8n-cloud-docs${NC}"
+  echo -e " ${GREEN}Xem huong dan:${NC} ${CYAN}${PROJECT_URL}${NC}"
   echo "------------------------------------------------------------------------------------"
   printf " %-3s %-35s %-3s ${YELLOW}%s${NC}\n" "1)" "Cai dat N8N" "6)" "Export tat ca (workflow & credentials)" 
   printf " %-3s %-35s %-3s %s\n" "2)" "Thay doi ten mien" "7)" "Import workflow & credentials"
