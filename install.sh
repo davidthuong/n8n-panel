@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# install.sh - Cai dat BizMaC N8N Manager
+# install.sh - Cai dat DevMux N8N Manager
 
 # --- Dinh nghia mau sac va bien ---
 RED='\e[1;31m'
@@ -9,10 +9,10 @@ YELLOW='\e[1;33m'
 CYAN='\e[1;36m'
 NC='\e[0m'
 
-BRAND_NAME="BizMaC"
-# Tam thoi dung GitHub; dat BIZMAC_ASSET_BASE_URL khi chuyen sang domain download BizMaC.
-ASSET_BASE_URL="${BIZMAC_ASSET_BASE_URL:-https://raw.githubusercontent.com/davidthuong/n8n-panel/main}"
-SCRIPT_NAME="bizmac-n8n"
+BRAND_NAME="DevMux"
+# Tam thoi dung GitHub; dat DEVMUX_ASSET_BASE_URL khi chuyen sang domain download DevMux.
+ASSET_BASE_URL="${DEVMUX_ASSET_BASE_URL:-https://raw.githubusercontent.com/davidthuong/n8n-panel/main}"
+SCRIPT_NAME="devmux-n8n"
 LEGACY_SCRIPT_NAME="n8n-host"
 SCRIPT_URL="${ASSET_BASE_URL}/n8n-host.sh"
 TEMPLATE_FILE_NAME="import-workflow-credentials.json"

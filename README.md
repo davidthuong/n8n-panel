@@ -1,8 +1,8 @@
-# BizMaC N8N Manager
+# DevMux N8N Manager
 
-BizMaC N8N Manager là bộ công cụ dòng lệnh giúp cài đặt và quản lý N8N trên máy chủ Ubuntu. Công cụ tự động cấu hình Docker, PostgreSQL, Redis, Nginx, SSL Let's Encrypt và cung cấp các thao tác quản trị thường dùng.
+DevMux N8N Manager là bộ công cụ dòng lệnh giúp cài đặt và quản lý N8N trên máy chủ Ubuntu. Công cụ tự động cấu hình Docker, PostgreSQL, Redis, Nginx, SSL Let's Encrypt và cung cấp các thao tác quản trị thường dùng.
 
-> Lệnh chính là `bizmac-n8n`. `n8n-host` chỉ là alias tương thích với các bản cài đặt trước.
+> Lệnh chính là `devmux-n8n`. `n8n-host` chỉ là alias tương thích với các bản cài đặt trước.
 
 ## Yêu cầu hệ thống
 
@@ -32,7 +32,7 @@ sudo bash install.sh
 Installer sẽ:
 
 1. Tải script quản trị `n8n-host.sh` từ repository này.
-2. Cài lệnh chính tại `/usr/local/bin/bizmac-n8n`.
+2. Cài lệnh chính tại `/usr/local/bin/devmux-n8n`.
 3. Tạo alias tương thích `/usr/local/bin/n8n-host`.
 4. Tải workflow import vào `/n8n-templates/import-workflow-credentials.json`.
 
@@ -40,17 +40,17 @@ Installer sẽ:
 
 GitHub hiện là nguồn asset tạm thời. Installer lấy script quản trị và template từ biến `ASSET_BASE_URL`, với giá trị mặc định là repository này.
 
-Khi hạ tầng download BizMaC sẵn sàng, có thể chuyển nguồn mà không sửa installer:
+Khi hạ tầng download DevMux sẵn sàng, có thể chuyển nguồn mà không sửa installer:
 
 ```bash
-sudo env BIZMAC_ASSET_BASE_URL="<URL_ASSET_BIZMAC>" bash install.sh
+sudo env DEVMUX_ASSET_BASE_URL="<URL_ASSET_DEVMUX>" bash install.sh
 ```
 
 URL được cung cấp phải có cấu trúc:
 
 ```text
-<URL_ASSET_BIZMAC>/n8n-host.sh
-<URL_ASSET_BIZMAC>/templates/import-workflow-credentials.json
+<URL_ASSET_DEVMUX>/n8n-host.sh
+<URL_ASSET_DEVMUX>/templates/import-workflow-credentials.json
 ```
 
 ## Sử dụng
@@ -58,13 +58,13 @@ URL được cung cấp phải có cấu trúc:
 Mở menu quản trị:
 
 ```bash
-sudo bizmac-n8n
+sudo devmux-n8n
 ```
 
 Hiển thị trợ giúp:
 
 ```bash
-bizmac-n8n --help
+devmux-n8n --help
 ```
 
 Lệnh cũ `n8n-host` vẫn hoạt động và chuyển tới cùng công cụ.
@@ -105,7 +105,7 @@ Chọn mục `6` để xuất toàn bộ workflows và credentials. Các file đ
 
 ### Import
 
-Chọn mục `7` để import workflow `[BizMaC] Import Workflows, Credentials`. Sau khi import:
+Chọn mục `7` để import workflow `[DevMux] Import Workflows, Credentials`. Sau khi import:
 
 1. Mở workflow trong giao diện N8N.
 2. Kích hoạt workflow.
@@ -122,10 +122,10 @@ Chọn mục `9` để mở menu NocoDB:
 ## Gỡ công cụ quản trị
 
 ```bash
-sudo bizmac-n8n --uninstall
+sudo devmux-n8n --uninstall
 ```
 
-Lệnh này xóa cả `/usr/local/bin/bizmac-n8n` và alias `/usr/local/bin/n8n-host`; dữ liệu N8N trong `/n8n-cloud` không bị xóa.
+Lệnh này xóa cả `/usr/local/bin/devmux-n8n` và alias `/usr/local/bin/n8n-host`; dữ liệu N8N trong `/n8n-cloud` không bị xóa.
 
 ## Cảnh báo an toàn
 
@@ -155,5 +155,6 @@ python -m json.tool templates/import-workflow-credentials.json > /dev/null
 
 ## Mã nguồn
 
+- Website: https://devmux.me
 - Repository: https://github.com/davidthuong/n8n-panel
-- Thương hiệu giao diện quản trị: **BizMaC**
+- Thương hiệu giao diện quản trị: **DevMux**

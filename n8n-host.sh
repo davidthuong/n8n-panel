@@ -8,10 +8,10 @@ CYAN='\e[1;36m'    # Mau xanh cyan (dam)
 NC='\e[0m'        # Reset mau (tro ve binh thuong)
 
 # --- Bien Global ---
-BRAND_NAME="BizMaC"
-COMMAND_NAME="bizmac-n8n"
+BRAND_NAME="DevMux"
+COMMAND_NAME="devmux-n8n"
 LEGACY_COMMAND_NAME="n8n-host"
-PROJECT_URL="https://github.com/davidthuong/n8n-panel"
+PROJECT_URL="https://devmux.me"
 N8N_DIR="/n8n-cloud" # Thu muc chua toan bo cai dat N8N
 ENV_FILE="${N8N_DIR}/.env"
 DOCKER_COMPOSE_FILE="${N8N_DIR}/docker-compose.yml"
@@ -1371,7 +1371,7 @@ import_data() {
         stop_spinner
         echo -e "\n${YELLOW}--- HUONG DAN SU DUNG ---${NC}"
         echo -e "1. Truy cap vao N8N qua trinh duyet."
-        echo -e "2. Tim workflow ${GREEN}[BizMaC] Import Workflows, Credentials${NC} trong danh sach 'Workflows'."
+        echo -e "2. Tim workflow ${GREEN}[DevMux] Import Workflows, Credentials${NC} trong danh sach 'Workflows'."
         echo -e "3. ${GREEN}Kich hoat (Activate)${NC} workflow va doc huong dan trong workflow de su dung."
     fi
     sudo rm -f "${import_log}"
@@ -1618,8 +1618,8 @@ fi
 show_menu() {
   clear
   printf "${CYAN}+==================================================================================+${NC}\n"
-  printf "${CYAN}|                               BizMaC N8N Manager                                 |${NC}\n"
-  printf "${CYAN}|                  Powered by BizMaC - github.com/davidthuong                     |${NC}\n"
+  printf "${CYAN}|                               DevMux N8N Manager                                 |${NC}\n"
+  printf "${CYAN}|                          Powered by DevMux - devmux.me                           |${NC}\n"
   printf "${CYAN}+==================================================================================+${NC}\n"
   echo ""
   echo -e " ${YELLOW}Phim tat: Nhan Ctrl + C hoac nhap 0 de thoat${NC}" 
